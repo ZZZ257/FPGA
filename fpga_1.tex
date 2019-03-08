@@ -1,0 +1,91 @@
+\documentclass{beamer}
+
+\title{FPGA Project}
+\subtitle{Error Correction using (7,4,3)-Hamming Code\newline \newline Sanjay and Zohan}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}
+	\tableofcontents
+\end{frame}
+
+\section{Introduction}
+\frame{
+\frametitle{Introduction}
+Error Correction is used to correct errors caused by the channel.
+\newline
+\newline
+(7,4,3)-Hamming Code encodes a 4-bit message onto 7 bits.
+The hamming distance of this code is 3. 
+\newline
+\newline
+Thus, it can correct one error.
+}
+
+\section{Encoding}
+\frame{
+\frametitle{Encoding}
+If the input code-word is:
+ (m_{1}, m_{2},  m_{3},  m_{4}),$
+Then the encoded code-word (c_{1}, c_{2},  c_{3},  c_{4}, c_{5},  c_{6},  c_{7}),$ is as follows:
+ 
+$$c_{1} = m_{1}$$
+$$c_{2} = m_{2}$$
+$$c_{3} = m_{3}$$
+$$c_{4} = m_{4}$$
+$$c_{5} = m_{1}+m_{2}+m_{4}$$
+$$c_{6} = m_{1}+m_{3}+m_{4}$$
+$$c_{7} = m_{2}+m_{3}+m_{4}$$
+
+Where all elements come from the Binary Field. Thus, + indicates XOR.
+}
+
+\section{Decoding}
+\frame{
+\frametitle{Decoding}
+If the received code-word is
+$ (y_{1}, y_{2},  y_{3},  y_{4}, y_{5},  y_{6},  y_{7})$, then the error code-word$ (e_{1}, e_{2},  e_{3},  e_{4}, e_{5}, e_{6},  e_{7}),$ is calculated using the syndrome vector, which is calculated by multiplying the received code-word vector with the transpose of the parity check matrix(H), of (7,4,3)-Hamming Code.
+\newline
+\newline
+$H_{(7,4,3)}$ = 
+$\begin{bmatrix} 
+1 & 0 & 0 & 1 & 1 & 0 & 1 \\ 
+0 & 1 & 0 & 1 & 0 & 1 & 1  \\ 
+0 & 0 & 1 & 0 & 1 & 1 & 1   
+\end{bmatrix}$
+\newline
+\newline
+The syndrome vector is a 3 bit vector. It has 8 possible values, where each value corresponds to one error vector of hamming weight one.
+\newline
+The error vector when added(XOR) to the received code-word gives us the corrected code-word.
+ 
+
+}
+
+\section{Implementation}
+\frame{
+\frametitle{Implementation}
+First, we generate input bit stream using Python. This input bit stream is sent to the FPGA via Arduino, where encoding takes place. The encoded bit stream is sent back to the Computer via Arduino, and is stored in a file.
+\newline
+\newline
+Now, randomized bit flips are introduced to the encoded code-words based on a given Probability of Bit Error $(P_b)$ (which depends on SNR). This data is stored in a new file and is sent to the FPGA via Arduino for decoding.
+\newline
+\newline
+After decoding, the decoded bit stream is sent back to the Computer via Arduino and is stored in another file. The Total Probability of Error $(P_e)$ can be calculated using the input file and the output file from the decoded bit stream.
+We can find various values of $(P_e)$ with respect to SNR.
+
+}
+
+\section{Trial on Arduino}
+\frame{
+\frametitle{Trial on Arduino}
+
+Before implementing Encoding and Decoding on FPGA, we would implement the same on an Arduino-UNO. This is because, it's easier to implement the whole algorithm and communicate in Arduino.
+
+}
+
+\end{document}
