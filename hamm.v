@@ -1,13 +1,20 @@
 module hamming_ecoder(
-    input [3:0] data_in,
-    output [6:0] ham_out
+	input wire clk,
+    input wire a,input wire b,input wire c,input wire d,
+    output reg e,output reg f,output reg g, output reg h
     );
-        
-    wire p0,p1,p2;
-    
-    assign p0 = data_in[0] ^ data_in[1] ^ data_in[3];
-    assign p1 = data_in[0] ^ data_in[2] ^ data_in[3];
-    assign p2 = data_in[1] ^ data_in[2] ^ data_in[3];
-    
-    assign ham_out = {data_in, p0, p1, p2};
+initial
+begin
+h<=0;
+
+end
+always@(posedge clk)
+begin
+
+
+     e = a^b^d;
+     f = a^c^d;
+     g = b^c^d;
+	 
+end    
 endmodule

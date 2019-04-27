@@ -70,5 +70,5 @@ for k in range(0,10):
 	n=0
 	print(Pe[k])
 
-plt.plot(SNR,Pe)
+plt.semilogy(SNR,Pe)
 plt.show()
